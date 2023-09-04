@@ -13,12 +13,12 @@ class BaseRequest:
         self.is_valid_body()
 
     @property
-    def body(self):
+    def body(self) -> str:
         self.is_valid_body()
         return self._body
 
     @property
-    def url(self):
+    def url(self) -> str:
         return self._url
 
     def is_valid_method(self):
