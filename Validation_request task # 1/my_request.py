@@ -4,7 +4,7 @@ from my_exeptions import MethodError, ParamsError, UrlError
 
 
 class Request(BaseRequest):
-    available_methods_1: list[str] = ["GET", "POST", "PUT", "PATCH"]
+    available_methods: list[str] = ["GET", "POST", "PUT", "PATCH"]
 
     def __init__(self, url, method, params=None, body=None):
         super().__init__(url, method, params, body)
@@ -24,7 +24,7 @@ class Request(BaseRequest):
         return self._url
 
     def is_valid_method(self):
-        if self.method not in self.available_methods_1:
+        if self.method not in self.available_methods:
             raise MethodError("The request method can only be GET,POST,PUT,PATCH")
 
     def is_valid_params(self):
@@ -42,3 +42,5 @@ class Request(BaseRequest):
     def is_valid_body(self):
         if self._body and (self.method in "GET"):
             raise MethodError("The request method GET can't take attribute body")
+
+
