@@ -4,7 +4,7 @@ from my_exeptions import MethodError
 class BaseRequest:
     available_methods: list[str] = ["GET", "POST"]
 
-    def __init__(self, url, method, params=None, body=None):
+    def __init__(self,  url: str, method: str, params: dict = None, body: str = None):
         self._url = url
         self.method = method
         self.is_valid_method()
