@@ -4,12 +4,12 @@ from my_exeptions import MethodError
 class BaseRequest:
     available_methods: list[str] = ["GET", "POST"]
 
-    def __init__(self,  url: str, method: str, params: dict = None, body: str = None):
-        self._url = url
-        self.method = method
+    def __init__(self,  url: str, method: str, params: dict | None, body: str | None) -> None:
+        self._url: str = url
+        self.method: str = method
         self.is_valid_method()
-        self.params = params
-        self._body = body
+        self.params: dict = params
+        self._body: str = body
         self.is_valid_body()
 
     @property
