@@ -6,7 +6,7 @@ from my_exeptions import MethodError, ParamsError, UrlError
 class Request(BaseRequest):
     available_methods: list[str] = ["GET", "POST", "PUT", "PATCH"]
 
-    def __init__(self, url: str, method: str, params: dict | None, body: str | None):
+    def __init__(self, url: str, method: str, params: dict | None, body: str | None) -> None:
         super().__init__(url, method, params, body)
         self.is_valid_method()
         self.is_valid_body()
