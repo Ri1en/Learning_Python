@@ -21,10 +21,10 @@ class BaseRequest:
     def url(self) -> str:
         return self._url
 
-    def is_valid_method(self):
+    def is_valid_method(self) -> None:
         if self.method not in self.available_methods:
             raise MethodError("The request method can only be GET or POST")
 
-    def is_valid_body(self):
-        if self.body and (self.method in "GET"):
+    def is_valid_body(self) -> None:
+        if self.body and (self.method == "GET"):
             raise MethodError("The request method GET can't take attribute body")
