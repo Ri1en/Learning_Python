@@ -11,8 +11,11 @@ def get_random_url_params() -> dict:
 
 
 def get_random_url() -> str:
-    random_urls_list: list[str] = ["http://" + ''.join((random.choice(string.ascii_lowercase)) for _ in range(4)) +
-                                   ".com" for _ in range(5)]
+    random_urls_list: list[str] = [
+
+        "http://" + ''.join((random.choice(string.ascii_lowercase)) for _ in range(4)) + ".com" for _ in range(5)
+    ]
+
     return random.choice(random_urls_list)
 
 
@@ -31,7 +34,8 @@ def get_random_method() -> str:
 
 
 def get_random_params() -> dict:
-    return {'method': get_random_method(),
+    return {
+            'method': get_random_method(),
             'status': get_random_status(),
             'request_time': random.randint(1, 10),
             'url': get_random_url(),
@@ -42,15 +46,16 @@ def get_random_params() -> dict:
 def retry(max_retries, generate_params_func):
     def retry_decorator(func):
         def _wrapper(*args, **kwargs):
-            d: dict = generate_params_func()
+            dict_of_parameters: dict = generate_params_func()
             available_status = [200, 201]
             for _ in range(max_retries):
                 if args[4] not in available_status:
-                    func(d["url"],
-                         d["params"],
-                         d["request_time"],
-                         d["method"],
-                         d["status"]
+                    func(
+                         dict_of_parameters["url"],
+                         dict_of_parameters["params"],
+                         dict_of_parameters["request_time"],
+                         dict_of_parameters["method"],
+                         dict_of_parameters["status"]
                          )
                 else:
                     return func(*args, **kwargs)
@@ -69,12 +74,15 @@ if __name__ == '__main__':
     for i in range(10):
         dict_with_params: dict = get_random_params()
         try:
-            response_object: Response_task_2.Response | None = controller(dict_with_params["url"],
-                                                                          dict_with_params["params"],
-                                                                          dict_with_params["request_time"],
-                                                                          dict_with_params["method"],
-                                                                          dict_with_params["status"]
-                                                                          )
+            response_object: Response_task_2.Response | None = (
+                controller(
+                    dict_with_params["url"],
+                    dict_with_params["params"],
+                    dict_with_params["request_time"],
+                    dict_with_params["method"],
+                    dict_with_params["status"]
+                ))
+
             print(response_object.status_text)
         except AttributeError:
             print("Wrong request")
