@@ -1,4 +1,4 @@
-from my_exeptions import TimeOutError
+from Response_task_2.my_exeptions import TimeOutError
 
 
 class Response:
