@@ -1,6 +1,6 @@
+from functools import lru_cache
 import psycopg2
 import db_config
-from functools import lru_cache
 
 
 @lru_cache()
@@ -15,8 +15,10 @@ class PostgresDb:
         self.cursor = None
         self.connection = None
         self.connect_db()
-        self.initialize_bd()
-        self.create_table()
+        if not hasattr(self, 'initialized'):
+            self.initialized = True
+            self.initialize_bd()
+            self.create_table()
 
     def initialize_bd(self):
         self.connection.autocommit = True
@@ -66,16 +68,3 @@ class PostgresDb:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.connection.commit()
         self.connection.close()
-
-
-if __name__ == '__main__':
-    pass
-    # config = get_env_variables()
-    # session_1 = PostgresDb(config)
-    # session_1.create_table()
-    # coords: dict = {"lat": 51.5085, "lon": -0.12574}
-    # response = get_weather_from_api(None, coords, "mr")
-    # # response = get_weather_from_api("Moscow")
-    # print(response.city)
-    # print(response.weather)
-    # print(response.local_name)

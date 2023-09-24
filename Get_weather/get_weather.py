@@ -1,12 +1,12 @@
 from functools import lru_cache
+import re
+import json
 import requests
 from pydantic import BaseModel, Field
 from my_exeptions import ValidError
 from postgres_db import PostgresDb
 from postgres_db import get_db_config
 import config
-import re
-import json
 
 
 class MyModel(BaseModel):
@@ -146,11 +146,5 @@ def is_valid_city(city) -> None:
 
 
 if __name__ == '__main__':
-
     coords: dict = {"lat": 51.5085, "lon": -0.12574}
-    # # response = get_weather_from_api(None, coords, "mr")
-    # response = get_weather_from_api("Berlin")
-    # print(response.city)
-    # print(response.weather)
     print(fetch_weather("Moscow"))
-    # print(response.local_name)
