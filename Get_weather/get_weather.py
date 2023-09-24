@@ -147,4 +147,3 @@ def is_valid_city(city) -> None:
 
 if __name__ == '__main__':
     coords: dict = {"lat": 51.5085, "lon": -0.12574}
-    print(fetch_weather("Moscow"))
