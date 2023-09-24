@@ -59,7 +59,6 @@ def get_weather_from_api(
         model_object.kelvin_to_celsius_validate()
         with open('weather_data.json', 'w') as file:
             json.dump(model_object.model_dump(), file)
-        save_weather_data(model_object)
         return model_object
 
     if coord:
@@ -79,7 +78,6 @@ def get_weather_from_api(
         model_object.kelvin_to_celsius_validate()
         with open('weather_data.json', 'w') as file:
             json.dump(model_object.model_dump(exclude={'local_names'}), file)
-        save_weather_data(model_object)
         return model_object
     return None
 
