@@ -2,6 +2,8 @@ from functools import lru_cache
 import requests
 from pydantic import BaseModel, Field
 from my_exeptions import ValidError
+from postgres_db import PostgresDb
+from postgres_db import get_db_config
 import config
 import re
 import json
@@ -18,6 +20,11 @@ class MyModel(BaseModel):
     temp_max: float
     humidity: float
     weather: list[dict]
+
+    def kelvin_to_celsius_validate(self) -> None:
+        self.temp = float('{:.3f}'.format(self.temp - 273))
+        self.temp_max = float('{:.3f}'.format(self.temp_max - 273))
+        self.temp_min = float('{:.3f}'.format(self.temp_min - 273))
 
 
 @lru_cache()
@@ -49,8 +56,10 @@ def get_weather_from_api(
         res = requests.get(url.format(city=city, api_key=api_key))
         data: dict = res.json()
         model_object = MyModel.model_construct(_fields_set=field_set, **data, **data['main'])
+        model_object.kelvin_to_celsius_validate()
         with open('weather_data.json', 'w') as file:
             json.dump(model_object.model_dump(), file)
+        save_weather_data(model_object)
         return model_object
 
     if coord:
@@ -67,8 +76,10 @@ def get_weather_from_api(
 
         model_object = MyModel.model_construct(_fields_set=field_set, **data, **data['main'])
         model_object.local_name = local_name
+        model_object.kelvin_to_celsius_validate()
         with open('weather_data.json', 'w') as file:
             json.dump(model_object.model_dump(exclude={'local_names'}), file)
+        save_weather_data(model_object)
         return model_object
     return None
 
@@ -87,6 +98,43 @@ def get_weather_coord_data(coord, api_key) -> dict:
     return data
 
 
+def save_weather_data(data_object: MyModel) -> None:
+    config_object = get_db_config()
+    with PostgresDb(config_object) as cursor:
+        insert_query: str = ("""
+        INSERT INTO weather_table (city, temp, temp_max, temp_min, weather, weather_description)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        """)
+        cursor.execute(insert_query, (
+            data_object.city,
+            data_object.temp,
+            data_object.temp_max,
+            data_object.temp_min,
+            data_object.weather[0]['main'],
+            data_object.weather[0]['description']
+        ))
+        cursor.close()
+
+
+def get_weather_from_db(city: str) -> tuple:
+    config_object = get_db_config()
+    with PostgresDb(config_object) as cursor:
+        cursor.execute("""
+        SELECT * FROM weather_table
+        WHERE city = %s
+        """, (city,))
+        rows: tuple = cursor.fetchall()
+        cursor.close()
+        return rows
+
+
+def fetch_weather(city: str) -> tuple | MyModel | None:
+    if get_weather_from_db(city):
+        return get_weather_from_db(city)
+    else:
+        return get_weather_from_api(city)
+
+
 def is_valid_coord(coord) -> None:
     if not (coord.get("lat") and coord.get("lon")):
         raise ValidError("Parameter coord is invalid. Coord format {'lat': float value, 'lon': float value}")
@@ -100,8 +148,9 @@ def is_valid_city(city) -> None:
 if __name__ == '__main__':
 
     coords: dict = {"lat": 51.5085, "lon": -0.12574}
-    response = get_weather_from_api(None, coords, "mr")
-    # response = get_weather_from_api("Moscow")
-    print(response.city)
-    print(response.weather)
-    print(response.local_name)
+    # # response = get_weather_from_api(None, coords, "mr")
+    # response = get_weather_from_api("Berlin")
+    # print(response.city)
+    # print(response.weather)
+    print(fetch_weather("Moscow"))
+    # print(response.local_name)
