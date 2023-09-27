@@ -14,3 +14,6 @@ class PostgresSettings(BaseSettings):
     pg_name: str = Field('db_name', env='db.env', alias='PG_DB_NAME')
     pg_password: str = Field('password', env='db.env', alias='PG_PASSWORD')
     pg_port: str = Field(5432, env='db.env', alias='PG_PORT')
+
+
+db_settings = PostgresSettings()

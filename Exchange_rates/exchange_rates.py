@@ -1,6 +1,6 @@
 from get_exchange_rates import get_currency_rate
 from postgres_db import PostgresDb
-from db_config import PostgresSettings
+from db_config import db_settings, PostgresSettings
 
 
 class ExchangeRates:
@@ -48,8 +48,7 @@ class ExchangeRates:
 
 
 if __name__ == '__main__':
-    settings = PostgresSettings()
-    database = PostgresDb(settings)
+    database = PostgresDb(db_settings)
     service = get_currency_rate
-    exchange = ExchangeRates(database, settings, service)
+    exchange = ExchangeRates(database, db_settings, service)
     exchange('USD')

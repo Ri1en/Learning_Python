@@ -1,10 +1,11 @@
 from datetime import datetime
-from functools import lru_cache
-from bs4 import BeautifulSoup
 import re
 from re import Match
+
+from bs4 import BeautifulSoup
 import requests
-from config import Settings
+
+from config import settings
 from my_exeptions import ValidError
 
 
@@ -20,12 +21,11 @@ def retry_decorator(func):
 
 @retry_decorator
 def get_currency_rate(char_code: str) -> tuple[str, float, datetime]:
-    settings = get_settings()
     is_valid_code(char_code)
     return parse_and_prepare_data(char_code, settings.currency_xml_url)
 
 
-def parse_and_prepare_data(char_code, url) -> tuple:
+def parse_and_prepare_data(char_code: str, url: str) -> tuple:
     page = requests.get(url)
     soup = BeautifulSoup(page.text, 'xml')
     currency_body = soup.find(string=f"{char_code}")
@@ -38,16 +38,10 @@ def parse_and_prepare_data(char_code, url) -> tuple:
     return utf_8_currency_name, float_currency_rate, exchange_rate_date.group()
 
 
-def convert_cp1251_to_utf8(text) -> str:
+def convert_cp1251_to_utf8(text: str) -> str:
     unicode_text = text.encode('cp1251')
     utf8_text: str = unicode_text.decode('utf-8')
     return utf8_text
-
-
-@lru_cache
-def get_settings() -> Settings:
-    settings = Settings()
-    return settings
 
 
 def is_valid_code(char_code) -> None:

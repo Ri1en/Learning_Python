@@ -9,6 +9,4 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file='exchange_rates.env', env_file_encoding='utf-8')
 
 
-if __name__ == '__main__':
-    settings = Settings()
-    print(settings.currency_xml_url)
+settings = Settings()
