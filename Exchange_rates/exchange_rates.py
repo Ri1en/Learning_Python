@@ -50,6 +50,6 @@ class ExchangeRates:
 if __name__ == '__main__':
     settings = PostgresSettings()
     database = PostgresDb(settings)
-    some_api_service = get_currency_rate
-    exchange = ExchangeRates(database, settings, some_api_service)
-    exchange('DZD')
+    service = get_currency_rate
+    exchange = ExchangeRates(database, settings, service)
+    exchange('USD')
