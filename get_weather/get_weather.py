@@ -1,12 +1,14 @@
 from functools import lru_cache
 import re
+
 import json
 import requests
 from pydantic import BaseModel, Field
-from my_exeptions import ValidError
-from postgres_db import PostgresDb
-from postgres_db import get_db_config
-import config
+
+from get_weather.my_exeptions import ValidError
+from get_weather.postgres_db import PostgresDb
+from get_weather.postgres_db import get_db_config
+from get_weather import config
 
 
 class MyModel(BaseModel):

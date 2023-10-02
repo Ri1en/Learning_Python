@@ -1,6 +1,10 @@
 from functools import lru_cache
+
+
 import psycopg2
-import db_config
+
+
+from get_weather import db_config
 
 
 @lru_cache()
@@ -16,24 +20,19 @@ class PostgresDb:
         self.connection = None
         self.connect_db()
 
-        if not hasattr(self, 'initialized'):
-            self.initialized = True
-            self.initialize_bd()
-            self.create_table()
-
     def initialize_bd(self):
         self.connection.autocommit = True
-        self.cursor.execute("SELECT 1 FROM pg_catalog.pg_database WHERE datname = 'weather_db'")
+        self.cursor.execute(f"SELECT 1 FROM pg_catalog.pg_database WHERE datname = '{self.config.pg_db_name}'")
         exists = self.cursor.fetchone()
         if not exists:
-            self.cursor.execute("CREATE DATABASE weather_db")
+            self.cursor.execute(f"CREATE DATABASE {self.config.pg_db_name}")
         self.cursor.close()
         self.connection.close()
 
     def connect_db(self):
         try:
             self.connection = psycopg2.connect(
-                database=self.config.pg_name,
+                database=self.config.pg_db_name,
                 user=self.config.pg_user,
                 password=self.config.pg_password,
                 port=self.config.pg_port,

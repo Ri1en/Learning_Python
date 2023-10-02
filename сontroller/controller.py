@@ -1,6 +1,6 @@
 import random
 import string
-import Response_task_2
+import response_task_2
 
 
 def get_random_url_params() -> dict:
@@ -65,8 +65,8 @@ def retry(max_retries, generate_params_func):
 
 
 @retry(10, get_random_params)
-def controller(url: str, params: dict, request_time: int, method: str, status: int) -> Response_task_2.Response | None:
-    return Response_task_2.Response(url, method, params, status, random.randint(1, 10), "Status text",
+def controller(url: str, params: dict, request_time: int, method: str, status: int) -> response_task_2.Response | None:
+    return response_task_2.Response(url, method, params, status, random.randint(1, 10), "Status text",
                                     "Content")
 
 
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     for i in range(10):
         dict_with_params: dict = get_random_params()
         try:
-            response_object: Response_task_2.Response | None = (
+            response_object: response_task_2.Response | None = (
                 controller(
                     dict_with_params["url"],
                     dict_with_params["params"],
