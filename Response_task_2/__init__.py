@@ -1,2 +1,2 @@
-from Response_task_2.response import Response
-from Response_task_2.my_exeptions import TimeOutError
+from response_task_2.response import Response
+from response_task_2.my_exeptions import TimeOutError
