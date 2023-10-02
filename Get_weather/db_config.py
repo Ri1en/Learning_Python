@@ -8,6 +8,8 @@ class PostgresSettings(BaseSettings):
 
     pg_host: str = Field('hostname', env='db.env', alias='PG_HOST')
     pg_user: str = Field('user', env='db.env', alias='PG_USER')
-    pg_name: str = Field('db_name', env='db.env', alias='PG_DB_NAME')
+    pg_db_name: str = Field('db_name', env='db.env', alias='PG_DB_NAME')
+    pg_table_name: str = Field('table_name', env='db.env', alias='PG_TABLE_NAME')
     pg_password: str = Field('password', env='db.env', alias='PG_PASSWORD')
-    pg_port: str = Field(5432, env='db.env', alias='PG_PORT')
+    pg_port: str = Field('5432', env='db.env', alias='PG_PORT')
+

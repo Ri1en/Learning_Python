@@ -1,7 +1,7 @@
-from get_weather import get_weather_from_api
-from postgres_db import PostgresDb
-from db_config import PostgresSettings
-from get_weather import MyModel
+from Get_weather.get_weather import get_weather_from_api
+from Get_weather.postgres_db import PostgresDb
+from Get_weather.db_config import PostgresSettings
+from Get_weather.get_weather import MyModel
 
 
 class Weather:
@@ -18,8 +18,8 @@ class Weather:
 
     def get_weather_from_db(self) -> tuple:
         with PostgresDb(self.db_settings) as cursor:
-            cursor.execute("""
-            SELECT * FROM weather_table
+            cursor.execute(f"""
+            SELECT * FROM {self.db_settings.pg_table_name}
             WHERE city = %s
             """, (self.city,))
             rows: tuple = cursor.fetchall()
@@ -28,8 +28,8 @@ class Weather:
 
     def save_weather_data(self, data_object: MyModel) -> None:
         with PostgresDb(self.db_settings) as cursor:
-            insert_query: str = ("""
-            INSERT INTO weather_table (city, temp, temp_max, temp_min, weather, weather_description)
+            insert_query: str = (f"""
+            INSERT INTO {self.db_settings.pg_table_name} (city, temp, temp_max, temp_min, weather, weather_description)
             VALUES (%s, %s, %s, %s, %s, %s)
             """)
             cursor.execute(insert_query, (
