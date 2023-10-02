@@ -1,7 +1,7 @@
-from Get_weather.get_weather import get_weather_from_api
-from Get_weather.postgres_db import PostgresDb
-from Get_weather.db_config import PostgresSettings
-from Get_weather.get_weather import MyModel
+from get_weather.get_weather import get_weather_from_api
+from get_weather.postgres_db import PostgresDb
+from get_weather.db_config import PostgresSettings
+from get_weather.get_weather import MyModel
 
 
 class Weather:

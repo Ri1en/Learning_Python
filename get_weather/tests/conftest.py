@@ -1,10 +1,10 @@
 import pytest
 
 
-import Get_weather
+import get_weather
 
 
-SETTINGS = Get_weather.PostgresSettings()
+SETTINGS = get_weather.PostgresSettings()
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -41,7 +41,7 @@ def save_weather_in_test_function(database_connection):
                          'temp_min': temp_min,
                          'weather':  [{'main': weather[0]['main'], 'description': weather[0]['description']}]
                          }
-        weather_model = Get_weather.MyModel.model_construct(_fields_set=field_set, **data_for_test)
+        weather_model = get_weather.MyModel.model_construct(_fields_set=field_set, **data_for_test)
         return weather_model
     return create_weather
 
@@ -60,5 +60,5 @@ def read_weather_in_test_function(database_connection):
 
 @pytest.fixture(scope='session')
 def database_connection():
-    db_connection = Get_weather.PostgresDb(SETTINGS)
+    db_connection = get_weather.PostgresDb(SETTINGS)
     return db_connection

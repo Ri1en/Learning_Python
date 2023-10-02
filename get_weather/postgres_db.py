@@ -4,7 +4,7 @@ from functools import lru_cache
 import psycopg2
 
 
-from Get_weather import db_config
+from get_weather import db_config
 
 
 @lru_cache()
@@ -19,10 +19,6 @@ class PostgresDb:
         self.cursor = None
         self.connection = None
         self.connect_db()
-        # if not hasattr(self, 'initialized'):
-        #     self.initialized = True
-        #     self.initialize_bd()
-        #     self.create_table()
 
     def initialize_bd(self):
         self.connection.autocommit = True

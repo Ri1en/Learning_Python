@@ -1,10 +1,10 @@
-import Get_weather
+import get_weather
 
 
 def test_write_to_db_by_save_weather(save_weather_in_test_function, read_weather_in_test_function):
-    settings = Get_weather.PostgresSettings()
-    db = Get_weather.PostgresDb(settings)
-    weather_object = Get_weather.Weather(db, settings, Get_weather.get_weather_from_api)
+    settings = get_weather.PostgresSettings()
+    db = get_weather.PostgresDb(settings)
+    weather_object = get_weather.Weather(db, settings, get_weather.get_weather_from_api)
     data_to_save = save_weather_in_test_function(
         'Moscow', 13.5, 14.5, 12.5, [{'main': 'rain', 'description': 'heavy rain'}]
     )
