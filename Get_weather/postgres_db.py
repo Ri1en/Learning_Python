@@ -19,10 +19,6 @@ class PostgresDb:
         self.cursor = None
         self.connection = None
         self.connect_db()
-        # if not hasattr(self, 'initialized'):
-        #     self.initialized = True
-        #     self.initialize_bd()
-        #     self.create_table()
 
     def initialize_bd(self):
         self.connection.autocommit = True
@@ -72,3 +68,4 @@ class PostgresDb:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.connection.commit()
         self.connection.close()
+        
