@@ -2,7 +2,6 @@ from get_weather.get_weather_service import get_weather_from_api
 from get_weather.postgres_db import PostgresDb
 from get_weather.db_config import PostgresSettings
 from get_weather.get_weather_service import MyModel
-import sandwitch_decorators
 
 
 class Weather:
@@ -17,9 +16,6 @@ class Weather:
         self.get_weather_from_api_service = api_service
         self.data = None
 
-    @sandwitch_decorators.decorators.cath_exceptions
-    @sandwitch_decorators.decorators.message_decorator
-    @sandwitch_decorators.decorators.time_it
     def get_weather_from_db(self) -> tuple:
         with PostgresDb(self.db_settings) as cursor:
             cursor.execute(f"""
