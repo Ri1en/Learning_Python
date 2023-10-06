@@ -20,9 +20,9 @@ class Users:
 
 @time_it
 def add_users() -> None:
-    with PostgresDb(settings) as cursor:
-        count = 0
-        while count != 10000:
+    count = 0
+    while count != 10000:
+        with PostgresDb(settings) as cursor:
             user = user_generator()
             insert_query = (f"""
             INSERT INTO {settings.pg_table_name} ({settings.pg_columns})
@@ -33,9 +33,8 @@ def add_users() -> None:
                 user.lastname,
                 user.age
             ))
-            count += 1
-        else:
             cursor.close()
+            count += 1
 
 
 @time_it
