@@ -29,3 +29,15 @@ def cath_exceptions(func):
         except Exception as e:
             print(f"Ошибка:{e}")
     return wrapper
+
+
+def time_it_async(func):
+    async def wrapper(*args, **kwargs):
+
+        start_time = time.time()
+        result = await func(*args, **kwargs)
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f"Время выполнения функции {func.__name__}: {execution_time} секунд")
+        return result
+    return wrapper
