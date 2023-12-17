@@ -28,7 +28,7 @@ def user_generator() -> Users:
 async def add_user(db_pool) -> None:
     user = user_generator()
     insert_query: str = (f"""
-                   INSERT INTO {settings.pg_table_name} ({settings.pg_columns})
+                   INSERT INTO async_table (firstname , lastname, age)
                    VALUES ($1, $2, $3)
                    """)
     await db_pool.execute(insert_query,
